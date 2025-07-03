@@ -439,3 +439,175 @@
 .dark .empty-state p {
   color: #9ca3af;
 }
+
+/* Delete Confirmation Styles */
+.delete-confirmation {
+  text-align: center;
+  padding: 1rem 0;
+}
+
+.delete-message {
+  font-size: 1.125rem;
+  color: #374151;
+  margin-bottom: 1.5rem;
+}
+
+.deposit-summary {
+  background-color: #f9fafb;
+  border: 1px solid #e5e7eb;
+  border-radius: 0.5rem;
+  padding: 1rem;
+  margin-bottom: 1.5rem;
+}
+
+.deposit-summary strong {
+  font-size: 1.25rem;
+  color: #1f2937;
+}
+
+.text-muted {
+  color: #6b7280;
+  font-size: 0.875rem;
+}
+
+.delete-warning {
+  color: #dc2626;
+  font-size: 0.875rem;
+  font-weight: 500;
+  margin-bottom: 1.5rem;
+}
+
+.delete-actions {
+  display: flex;
+  gap: 1rem;
+  justify-content: center;
+}
+
+.btn-danger {
+  background-color: #dc2626;
+  color: white;
+}
+
+.btn-danger:hover {
+  background-color: #b91c1c;
+}
+
+.card-action-button.delete {
+  background-color: #dc2626;
+  color: white;
+  border-color: #dc2626;
+}
+
+.card-action-button.delete:hover {
+  background-color: #b91c1c;
+  border-color: #b91c1c;
+}
+
+/* Dark mode delete styles */
+.dark .delete-message {
+  color: #d1d5db;
+}
+
+.dark .deposit-summary {
+  background-color: #1f2937;
+  border-color: #4b5563;
+}
+
+.dark .deposit-summary strong {
+  color: #f9fafb;
+}
+
+.dark .text-muted {
+  color: #9ca3af;
+}
+
+/* Add New Deposit Button Styles */
+.add-deposit-button-container {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.add-deposit-button {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  background: linear-gradient(135deg, #3b82f6, #1d4ed8);
+  color: white;
+  text-decoration: none;
+  padding: 1rem 1.5rem;
+  border-radius: 0.75rem;
+  font-weight: 600;
+  font-size: 0.875rem;
+  box-shadow: 0 4px 12px rgba(59, 130, 246, 0.3);
+  transition: all 0.3s ease;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  border: none;
+  cursor: pointer;
+  min-width: 200px;
+  justify-content: center;
+}
+
+.add-deposit-button:hover {
+  background: linear-gradient(135deg, #2563eb, #1e40af);
+  transform: translateY(-2px);
+  box-shadow: 0 8px 20px rgba(59, 130, 246, 0.4);
+  color: white;
+  text-decoration: none;
+}
+
+.add-deposit-button:active {
+  transform: translateY(0);
+  box-shadow: 0 4px 12px rgba(59, 130, 246, 0.3);
+}
+
+.add-deposit-button svg {
+  transition: transform 0.3s ease;
+}
+
+.add-deposit-button:hover svg {
+  transform: rotate(90deg);
+}
+
+/* Dark mode styles for Add New Deposit button */
+.dark .add-deposit-button {
+  background: linear-gradient(135deg, #60a5fa, #3b82f6);
+  box-shadow: 0 4px 12px rgba(96, 165, 250, 0.3);
+}
+
+.dark .add-deposit-button:hover {
+  background: linear-gradient(135deg, #3b82f6, #2563eb);
+  box-shadow: 0 8px 20px rgba(96, 165, 250, 0.4);
+}
+
+/* Responsive adjustments for Add New Deposit button */
+@media (max-width: 768px) {
+  .add-deposit-button-container {
+    width: 100%;
+    margin-top: 1rem;
+  }
+  
+  .add-deposit-button {
+    width: 100%;
+    min-width: auto;
+    padding: 0.875rem 1.25rem;
+  }
+  
+  .portfolio-summary {
+    flex-direction: column;
+  }
+}
+
+@media (max-width: 480px) {
+  .add-deposit-button {
+    font-size: 0.8rem;
+    padding: 0.75rem 1rem;
+  }
+}
+
+/* Empty state button styles */
+.empty-state-button {
+  margin-top: 1.5rem;
+  min-width: 250px;
+}

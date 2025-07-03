@@ -1,11 +1,18 @@
 import { useState, useEffect } from "react";
-import { getAllDeposits } from "../api/deposits.api";
+import { getAllDeposits, deleteDeposit } from "../api/deposits.api";
+import DepositForm from './DepositForm';
+import Modal from './Modal';
 import "./DepositList.css";
 
 export function DepositList() {
     const [deposits, setDeposits] = useState([]);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(null);
+    const [editModalOpen, setEditModalOpen] = useState(false);
+    const [deleteModalOpen, setDeleteModalOpen] = useState(false);
+    const [newDepositModalOpen, setNewDepositModalOpen] = useState(false);
+    const [selectedDeposit, setSelectedDeposit] = useState(null);
+    const [deleteLoading, setDeleteLoading] = useState(false);
 
     useEffect(() => {
         async function loadDeposits() {
@@ -58,6 +65,61 @@ export function DepositList() {
         }
     };
 
+    const handleEditDeposit = (deposit) => {
+        setSelectedDeposit(deposit);
+        setEditModalOpen(true);
+    };
+
+    const handleDeleteDeposit = (deposit) => {
+        setSelectedDeposit(deposit);
+        setDeleteModalOpen(true);
+    };
+
+    const handleEditSubmit = (updatedDeposit) => {
+        setDeposits(prevDeposits => 
+            prevDeposits.map(deposit => 
+                deposit.id === updatedDeposit.id ? updatedDeposit : deposit
+            )
+        );
+        setEditModalOpen(false);
+        setSelectedDeposit(null);
+    };
+
+    const handleDeleteConfirm = async () => {
+        if (!selectedDeposit) return;
+        
+        try {
+            setDeleteLoading(true);
+            await deleteDeposit(selectedDeposit.id);
+            setDeposits(prevDeposits => 
+                prevDeposits.filter(deposit => deposit.id !== selectedDeposit.id)
+            );
+            setDeleteModalOpen(false);
+            setSelectedDeposit(null);
+        } catch (error) {
+            console.error('Error deleting deposit:', error);
+            setError('Failed to delete deposit');
+        } finally {
+            setDeleteLoading(false);
+        }
+    };
+
+    const handleAddDeposit = () => {
+        setNewDepositModalOpen(true);
+    };
+
+    const handleNewDepositSubmit = (newDeposit) => {
+        setDeposits(prevDeposits => [newDeposit, ...prevDeposits]);
+        setNewDepositModalOpen(false);
+    };
+
+    const closeModals = () => {
+        setEditModalOpen(false);
+        setDeleteModalOpen(false);
+        setNewDepositModalOpen(false);
+        setSelectedDeposit(null);
+    };
+
     if (loading) {
         return (
             <div className="DepositList">
@@ -103,6 +165,23 @@ export function DepositList() {
                             {formatCurrency(deposits.reduce((sum, deposit) => sum + parseFloat(deposit.deposit_amount || 0), 0))}
                         </span>
                     </div>
+                    <div className="add-deposit-button-container">
+                        <button onClick={handleAddDeposit} className="add-deposit-button">
+                            <svg 
+                                width="20" 
+                                height="20" 
+                                viewBox="0 0 24 24" 
+                                fill="none" 
+                                stroke="currentColor" 
+                                strokeWidth="2" 
+                                strokeLinecap="round" 
+                                strokeLinejoin="round"
+                            >
+                                <path d="M12 5v14M5 12h14" />
+                            </svg>
+                            Add New Deposit
+                        </button>
+                    </div>
                 </div>
             </div>
 
@@ -111,6 +190,21 @@ export function DepositList() {
                     <div className="empty-state-icon">💰</div>
                     <h3>No deposits found</h3>
                     <p>Start building your portfolio by creating your first deposit.</p>
+                    <button onClick={handleAddDeposit} className="add-deposit-button empty-state-button">
+                        <svg 
+                            width="20" 
+                            height="20" 
+                            viewBox="0 0 24 24" 
+                            fill="none" 
+                            stroke="currentColor" 
+                            strokeWidth="2" 
+                            strokeLinecap="round" 
+                            strokeLinejoin="round"
+                        >
+                            <path d="M12 5v14M5 12h14" />
+                        </svg>
+                        Add Your First Deposit
+                    </button>
                 </div>
             ) : (
                 <div className="deposits-grid">
@@ -171,11 +265,17 @@ export function DepositList() {
                                 </div>
                                 
                                 <div className="deposit-card-footer">
-                                    <button className="card-action-button view-details">
-                                        View Details
-                                    </button>
-                                    <button className="card-action-button edit">
+                                    <button 
+                                        className="card-action-button edit"
+                                        onClick={() => handleEditDeposit(deposit)}
+                                    >
                                         Edit
+                                    </button>
+                                    <button 
+                                        className="card-action-button delete"
+                                        onClick={() => handleDeleteDeposit(deposit)}
+                                    >
+                                        Delete
                                     </button>
                                 </div>
                             </div>
@@ -183,6 +283,88 @@ export function DepositList() {
                     })}
                 </div>
             )}
+
+            {/* Add New Deposit Modal */}
+            <Modal
+                isOpen={newDepositModalOpen}
+                onClose={closeModals}
+                title="Add New Deposit"
+                size="large"
+            >
+                <DepositForm
+                    mode="create"
+                    onSubmit={handleNewDepositSubmit}
+                    onCancel={closeModals}
+                />
+            </Modal>
+
+            {/* Edit Modal */}
+            <Modal
+                isOpen={editModalOpen}
+                onClose={closeModals}
+                title="Edit Deposit"
+                size="large"
+            >
+                {selectedDeposit && (
+                    <DepositForm
+                        mode="edit"
+                        depositId={selectedDeposit.id}
+                        onSubmit={handleEditSubmit}
+                        onCancel={closeModals}
+                    />
+                )}
+            </Modal>
+
+            {/* Delete Confirmation Modal */}
+            <Modal
+                isOpen={deleteModalOpen}
+                onClose={closeModals}
+                title="Delete Deposit"
+                size="small"
+            >
+                {selectedDeposit && (
+                    <div className="delete-confirmation">
+                        <p className="delete-message">
+                            Are you sure you want to delete this deposit?
+                        </p>
+                        <div className="deposit-summary">
+                            <strong>{formatCurrency(selectedDeposit.deposit_amount)}</strong>
+                            <br />
+                            <span className="text-muted">{selectedDeposit.bank_name}</span>
+                            <br />
+                            <span className="text-muted">
+                                Maturity: {formatDate(selectedDeposit.maturity_date)}
+                            </span>
+                        </div>
+                        <p className="delete-warning">
+                            This action cannot be undone.
+                        </p>
+                        <div className="delete-actions">
+                            <button
+                                onClick={closeModals}
+                                className="btn btn-secondary"
+                                disabled={deleteLoading}
+                            >
+                                Cancel
+                            </button>
+                            <button
+                                onClick={handleDeleteConfirm}
+                                className="btn btn-danger"
+                                disabled={deleteLoading}
+                            >
+                                {deleteLoading ? (
+                                    <>
+                                        <span className="btn-spinner"></span>
+                                        Deleting...
+                                    </>
+                                ) : (
+                                    'Delete Deposit'
+                                )}
+                            </button>
+                        </div>
+                    </div>
+                )}
+            </Modal>
         </div>
     );
 }
