@@ -1,3 +1,5 @@
+import "./DepositFormPage.css";
+
 export function DepositFormPage() {
   return (
     <div className="DepositFormPage">
