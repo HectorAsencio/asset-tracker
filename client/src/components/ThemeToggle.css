@@ -1,0 +1,95 @@
+/* Theme Toggle Button */
+.theme-toggle-button {
+  position: fixed;
+  bottom: 2rem;
+  left: 2rem;
+  width: 56px;
+  height: 56px;
+  border-radius: 50%;
+  background-color: #3b82f6;
+  color: white;
+  border: none;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 4px 12px rgba(59, 130, 246, 0.4);
+  transition: all 0.3s ease;
+  z-index: 1000;
+  padding: 0;
+}
+
+.theme-toggle-button:hover {
+  background-color: #2563eb;
+  transform: translateY(-2px);
+  box-shadow: 0 6px 20px rgba(59, 130, 246, 0.6);
+}
+
+.theme-toggle-button:active {
+  transform: translateY(0);
+  box-shadow: 0 2px 8px rgba(59, 130, 246, 0.4);
+}
+
+.theme-toggle-icon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: transform 0.3s ease;
+}
+
+.theme-toggle-button:hover .theme-toggle-icon {
+  transform: rotate(180deg);
+}
+
+/* Dark mode styles */
+.dark .theme-toggle-button {
+  background-color: #f59e0b;
+  box-shadow: 0 4px 12px rgba(245, 158, 11, 0.4);
+}
+
+.dark .theme-toggle-button:hover {
+  background-color: #d97706;
+  box-shadow: 0 6px 20px rgba(245, 158, 11, 0.6);
+}
+
+.dark .theme-toggle-button:active {
+  box-shadow: 0 2px 8px rgba(245, 158, 11, 0.4);
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+  .theme-toggle-button {
+    bottom: 1.5rem;
+    left: 1.5rem;
+    width: 48px;
+    height: 48px;
+  }
+  
+  .theme-toggle-icon svg {
+    width: 18px;
+    height: 18px;
+  }
+}
+
+/* Focus styles for accessibility */
+.theme-toggle-button:focus {
+  outline: none;
+  box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.5);
+}
+
+.dark .theme-toggle-button:focus {
+  box-shadow: 0 0 0 3px rgba(245, 158, 11, 0.5);
+}
+
+/* Animation for smooth icon transition */
+.theme-toggle-icon svg {
+  transition: opacity 0.3s ease;
+}
+
+/* Ensure button doesn't interfere with content */
+.theme-toggle-button {
+  user-select: none;
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+}

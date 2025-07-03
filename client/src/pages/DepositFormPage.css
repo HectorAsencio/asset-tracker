@@ -1,0 +1,33 @@
+/* DepositFormPage Component Styles */
+.DepositFormPage {
+  padding: 2rem;
+  max-width: 800px;
+  margin: 0 auto;
+}
+
+.DepositFormPage-header {
+  text-align: center;
+  margin-bottom: 2rem;
+}
+
+.DepositFormPage-header h1 {
+  color: #1f2937;
+  font-size: 2.5rem;
+  font-weight: 700;
+  margin-bottom: 1rem;
+}
+
+.DepositFormPage-header p {
+  color: #6b7280;
+  font-size: 1.125rem;
+  margin: 0;
+}
+
+/* Dark mode styles */
+.dark .DepositFormPage-header h1 {
+  color: #f9fafb;
+}
+
+.dark .DepositFormPage-header p {
+  color: #d1d5db;
+}
